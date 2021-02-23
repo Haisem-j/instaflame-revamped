@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import backendRoute from '../../Utils'
+import { connect } from "react-redux";
+import * as utils from '../../Utils'
 class Card extends React.Component {
   constructor(props) {
     super(props);
@@ -10,18 +11,19 @@ class Card extends React.Component {
     };
   }
   likePost = async () => {
+    console.log('TOKEN IN CARD');
+    console.log(this.props.setToken);
     if (this.state.liked === false) {
       try {
         let response = await fetch(
-          `${backendRoute}/posts/like/${this.props.post.imageId}`,
+          `${utils.backendRoute}/posts/like/${this.props.post.imageId}`,
           {
-            method: "POST",
             headers: {
-              "auth-token": this.props.setToken
+              "jwt": this.props.setToken
             }
           }
         );
-        await response.json();
+        let res = await response.json();
         this.setState({
           liked: true
         });
@@ -33,7 +35,7 @@ class Card extends React.Component {
 
   render() {
     const { post } = this.props;
-    console.log(this.state.liked);
+
     return (
       <div className="card custom-card-bottom">
         <div className="card-content">
@@ -56,7 +58,7 @@ class Card extends React.Component {
           <div className="card-image">
             <figure className="image is-4by3">
               <img
-                src={`http://localhost:5000/api/posts/${post.imageId}`}
+                src={`${utils.imageRoute}/${post.imageId}`}
                 alt="Placeholder"
               />
             </figure>
@@ -70,7 +72,9 @@ class Card extends React.Component {
               <i className="far fa-comment"></i>
             </span>
           </div>
-          <p className="subtitle is-size-7 p-margin">{post.likes} likes</p>
+          <p className="subtitle is-size-7 p-margin">{
+            this.state.liked ? post.likes + 1 : post.likes
+          } likes</p>
           <div className="content">{post.desc}</div>
         </div>
         <footer className="card-footer">
@@ -85,5 +89,7 @@ class Card extends React.Component {
     );
   }
 }
-
-export default Card;
+const mapStateToProps = state => {
+  return state;
+}
+export default connect(mapStateToProps, null)(Card)

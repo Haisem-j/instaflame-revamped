@@ -1,12 +1,13 @@
 import React, {useState} from 'react'
 import { Link } from "react-router-dom";
-import backendRoute from '../../Utils'
+import * as utils from '../../Utils'
 function SignUp(){
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isSuccess, setIsSuccess] = useState(false)
     const [isError, setIsError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('Something went wrong....')
 
     const mySubmitHandler = async event=>{
         event.preventDefault();
@@ -19,7 +20,7 @@ function SignUp(){
     
         try {
           event.target.reset();
-          let response = await fetch(`${backendRoute}auth/register`, {
+          let response = await fetch(`${utils.backendRoute}/auth/registerUser`, {
             method: "POST",
             body: JSON.stringify(user),
             headers: {
@@ -29,7 +30,12 @@ function SignUp(){
     
           let result = await response.json();
           console.log(result);
-          setIsSuccess(true)
+          if(result.success){
+            setIsSuccess(true)
+          }else{
+            setErrorMessage(result.msg)
+            setIsError(true)
+          }
         } catch (err) {
           console.log(err);
           setIsError(true)
@@ -53,7 +59,7 @@ function SignUp(){
                 ""
               )}
               {isError === true ? (
-                <div className="button is-danger m-bottom">Something went wrong...</div>
+                <div className="button is-danger m-bottom">{errorMessage}</div>
               ) : (
                 ""
               )}

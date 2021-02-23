@@ -2,15 +2,16 @@ import React, {useState} from 'react'
 import { connect } from "react-redux";
 import { isLoggedIn, loginToken, setUser} from "../../actions";
 import { Link } from "react-router-dom";
-import backendRoute from '../../Utils'
+import * as utils from '../../Utils'
 
 function Login(props){
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [isError, setIsError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('Something went wrong....')
 
     const mySubmitHandler = async event=>{
         event.preventDefault();
-        console.log(backendRoute);
         const user = {
           username: username,
           password: password,
@@ -19,7 +20,7 @@ function Login(props){
         console.log(user);
     
         try {
-          let response = await fetch(`${backendRoute}/auth/login`, {
+          let response = await fetch(`${utils.backendRoute}/auth/login`, {
             method: "POST",
             body: JSON.stringify(user),
             headers: {
@@ -28,11 +29,17 @@ function Login(props){
           });
     
           let result = await response.json();
-          props.setUser(user.username)
-          props.loginToken('TOKEEEN')
-          props.isLoggedIn(true);
+          if(result.success){
+            props.setUser(user.username)
+            props.loginToken(result.data.token)
+            props.isLoggedIn(true);
+          }else{
+            setErrorMessage(result.msg)
+            setIsError(true)
+          }
         } catch (err) {
           console.log(err);
+          setIsError(true)
         }
     }
 
@@ -49,6 +56,11 @@ function Login(props){
             </div>
 
             <form onSubmit={mySubmitHandler}>
+            {isError === true ? (
+                <div className="button is-danger m-bottom">{errorMessage}</div>
+              ) : (
+                ""
+              )}
               <div className="field">
                 <p className="control has-icons-left has-icons-right">
                   <input

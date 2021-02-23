@@ -1,19 +1,20 @@
 import React from "react";
 import Card from "./Card";
 import { connect } from "react-redux";
-import backendRoute from '../../Utils'
+import * as utils from '../../Utils'
+
 class Body extends React.Component {
   async componentDidMount() {
     try {
-      let response = await fetch(`${backendRoute}posts"`, {
+      let response = await fetch(`${utils.backendRoute}/posts/getAll`, {
         method: "GET",
         headers: {
-          "auth-token": this.props.setToken
+          "jwt": this.props.setToken
         }
       });
-      let final = await response.json();
+      let results = await response.json();
       this.setState({
-        posts: final
+        posts: results.data.posts
       });
 
     } catch (err) {

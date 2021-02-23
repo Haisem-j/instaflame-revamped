@@ -1,15 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import backendRoute from '../../Utils';
+import * as utils from '../../Utils';
 class Post extends React.Component {
   deletePost = async () => {
     try {
       let response = await fetch(
-        `${backendRoute}/posts/del/${this.props.post}`,
+        `${utils.backendRoute}/posts/del/${this.props.post}`,
         {
-          method: "POST",
+          method: "DELETE",
           headers: {
-            "auth-token": this.props.setToken
+            "jwt": this.props.setToken
           }
         }
       );
@@ -30,7 +30,7 @@ class Post extends React.Component {
               onClick={this.deletePost}
             ></div>
             <img
-              src={`${backendRoute}/posts/${this.props.post}`}
+              src={`${utils.imageRoute}/${this.props.post}`}
               alt="Placeholder"
             />
           </figure>
@@ -41,7 +41,7 @@ class Post extends React.Component {
         <div className="column is-one-third">
           <figure className="image is-1x1">
             <img
-              src={`${backendRoute}/posts/${this.props.post}`}
+              src={`${utils.imageRoute}/${this.props.post}`}
               alt="Placeholder"
             />
           </figure>

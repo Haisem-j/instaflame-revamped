@@ -2,25 +2,25 @@ import React from "react";
 import HeaderProfile from "./HeaderProfile";
 import { connect } from "react-redux";
 import Post from "./Post";
-import backendRoute from '../../Utils'
+import * as utils from '../../Utils'
 class Profile extends React.Component {
   async componentDidMount() {
     let name = this.props.location.pathname.split("/");
 
     try {
       let response = await fetch(
-        `${backendRoute}/posts/profile/${name[2]}`,
+        `${utils.backendRoute}/posts/profile/${name[2]}`,
         {
           method: "GET",
           headers: {
-            "auth-token": this.props.setToken
+            "jwt": this.props.setToken
           }
         }
       );
       let final = await response.json();
 
       this.setState({
-        posts: final,
+        posts: final.data,
         name: name[2]
       });
     } catch (err) {

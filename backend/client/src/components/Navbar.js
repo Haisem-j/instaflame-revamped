@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { isLoggedIn, loginToken } from "../actions/index";
+import { isLoggedIn } from "../actions/index";
 import { connect } from "react-redux";
+import * as utils from '../Utils'
 
 class Navbar extends React.Component {
   logoutHandler = async () => {
@@ -11,13 +12,11 @@ class Navbar extends React.Component {
     try {
       this.props.isLoggedIn(false);
 
-      let response = await fetch("http://localhost:5000/api/auth/logout", {
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify(token),
+      let response = await fetch(`${utils.backendRoute}/auth/logout`, 
+      {
+        method: "GET",
         headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json"
+          "jwt": this.props.setToken
         }
       });
       await response.json();
@@ -81,6 +80,5 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  isLoggedIn,
-  loginToken
+  isLoggedIn
 })(Navbar);
