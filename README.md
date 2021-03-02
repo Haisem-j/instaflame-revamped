@@ -33,7 +33,7 @@ This readme assumes you have mysql, node.js, python 3, and pip3 installed on you
 2. Install all required dependancies from requirements.txt
 
    ```sh
-   pip3 -r install requirements.txt
+   pip3 install -r requirements.txt
    ```
 
 3. Edit the settings.py file and change/add to the following values; ALLOWED_HOSTS, CORS_ORIGIN_WHITELIST, DATABASES
