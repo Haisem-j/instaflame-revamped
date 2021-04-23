@@ -11,6 +11,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { isLoggedIn, loginToken, setUser } from "../actions";
 
+import { ROOT, LOGIN, REGISTER, PROFILE, UPLOAD, HOME } from "./CONSTANTS";
+
 const RouterConfig = ({ loggedIn, setUser, loginToken, isLoggedIn }) => {
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
@@ -27,18 +29,18 @@ const RouterConfig = ({ loggedIn, setUser, loginToken, isLoggedIn }) => {
       <div>
         <Navbar />
         <Switch>
-          <Route exact path="/login">
-            <Redirect to="/home" />
+          <Route exact path={LOGIN}>
+            <Redirect to={HOME} />
           </Route>
-          <Route exact path="/register">
-            <Redirect to="/home" />
+          <Route exact path={REGISTER}>
+            <Redirect to={HOME} />
           </Route>
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/">
-            <Redirect to="/home" />
+          <Route exact path={HOME} component={Home} />
+          <Route exact path={ROOT}>
+            <Redirect to={HOME} />
           </Route>
-          <Route exact path="/profile/:profile" component={Profile} />
-          <Route exact path="/upload" component={CreatePicture} />
+          <Route exact path={PROFILE} component={Profile} />
+          <Route exact path={UPLOAD} component={CreatePicture} />
         </Switch>
       </div>
     );
@@ -48,20 +50,20 @@ const RouterConfig = ({ loggedIn, setUser, loginToken, isLoggedIn }) => {
     return (
       <div>
         <Switch>
-          <Route exact path="/">
-            <Redirect to="/login" />
+          <Route exact path={ROOT}>
+            <Redirect to={LOGIN} />
           </Route>
-          <Route exact path="/home">
-            <Redirect to="/login" />
+          <Route exact path={HOME}>
+            <Redirect to={LOGIN} />
           </Route>
-          <Route exact path="/profile/:profile">
-            <Redirect to="/login" />
+          <Route exact path={PROFILE}>
+            <Redirect to={LOGIN} />
           </Route>
-          <Route exact path="/upload">
-            <Redirect to="/login" />
+          <Route exact path={UPLOAD}>
+            <Redirect to={LOGIN} />
           </Route>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
+          <Route exact path={LOGIN} component={Login} />
+          <Route exact path={REGISTER} component={Register} />
         </Switch>
       </div>
     );
