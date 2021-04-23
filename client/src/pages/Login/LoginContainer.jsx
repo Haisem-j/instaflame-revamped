@@ -19,10 +19,15 @@ const LoginContainer = ({ setUser, loginToken, isLoggedIn }) => {
       username: username,
       password: password,
     };
-    console.log("user here");
-    console.log(user);
+
     authLogin(user).then((result) => {
       if (result.success) {
+        let lUser = {
+          username,
+          password,
+          token: result.data.token,
+        };
+        localStorage.setItem("user", JSON.stringify(lUser));
         setUser(user.username);
         loginToken(result.data.token);
         isLoggedIn(true);

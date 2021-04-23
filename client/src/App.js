@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import RouterConfig from "./navigation/RouterConfig";
 
 import { Provider } from "react-redux";

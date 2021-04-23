@@ -1,12 +1,15 @@
 import NavbarView from "./NavbarView";
 
-import { isLoggedIn } from "../../actions";
+import { isLoggedIn, loginToken, setUser } from "../../actions";
 import { connect } from "react-redux";
 import * as utils from "../../Utils";
 
 const NavbarContainer = ({ isLoggedIn, setToken, getUser }) => {
   const logoutHandler = async () => {
     try {
+      localStorage.clear();
+      loginToken("");
+      setUser("");
       isLoggedIn(false);
       let response = await fetch(`${utils.backendRoute}/auth/logout`, {
         headers: {
