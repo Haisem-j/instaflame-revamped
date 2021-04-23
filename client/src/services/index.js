@@ -1,5 +1,6 @@
 export { authRegister } from "./authServices";
 export { authLogin } from "./authServices";
+export { authLogout } from "./authServices";
 
 export { getAllPosts } from "./postsServices";
 export { deletePost } from "./postsServices";

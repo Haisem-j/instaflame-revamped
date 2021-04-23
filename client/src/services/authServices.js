@@ -41,3 +41,16 @@ export const authRegister = async (user) => {
     return result;
   }
 };
+export const authLogout = async (token) => {
+  try {
+    let response = await fetch(`${utils.backendRoute}/auth/logout`, {
+      headers: {
+        jwt: token,
+      },
+    });
+    await response.json();
+    return true;
+  } catch (err) {
+    console.log("err");
+  }
+};
